@@ -50,8 +50,8 @@
     "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.12",
     "puppeteer": "^21.5.0",
-    "chart.js": "^3.9.1",
-    "chartjs-node-canvas": "^4.1.6",
+    "chart.js": "3.9.1",
+    "chartjs-node-canvas": "4.1.6",
     "moment": "^2.29.4",
     "lodash": "^4.17.21",
     "natural": "^6.10.0",
@@ -360,5 +360,11 @@
   },
   "keywords": ["youtube", "tiktok", "instagram", "analytics", "social-media", "optimization", "google-cloud", "data-analysis", "lyra", "search", "lyralytics", "marketing", "automation", "workflow", "business", "insights", "website", "development", "dashboard", "content-creators", "influencers", "youtubers", "tiktokers"],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "resolutions": {
+    "chart.js": "3.9.1"
+  },
+  "overrides": {
+    "chart.js": "3.9.1"
+  }
 } 

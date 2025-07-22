@@ -24,7 +24,7 @@ cd frontend
 
 # Install dependencies
 echo "📦 Installing dependencies..."
-npm install
+npm install --legacy-peer-deps
 
 if [ $? -ne 0 ]; then
     echo "❌ Failed to install dependencies"
@@ -60,7 +60,7 @@ fi
 
 # Build the project to check for errors
 echo "🔨 Building project..."
-npm run build
+npm run build --legacy-peer-deps
 
 if [ $? -ne 0 ]; then
     echo "❌ Build failed. Please check for errors above."
