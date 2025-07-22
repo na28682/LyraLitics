@@ -6,6 +6,10 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "frontend": "cd frontend && npm start",
+    "frontend-api": "node frontend-api.js",
+    "dev-full": "concurrently \"npm run dev\" \"npm run frontend-api\" \"npm run frontend\"",
+    "setup-frontend": "./setup_frontend.sh",
     "test": "node test.js",
     "analyze": "node social-analytics.js",
     "dashboard": "node dashboard.js",
