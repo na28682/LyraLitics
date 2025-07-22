@@ -50,7 +50,7 @@
     "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.12",
     "puppeteer": "^21.5.0",
-    "chart.js": "^4.4.0",
+    "chart.js": "^3.9.1",
     "chartjs-node-canvas": "^4.1.6",
     "moment": "^2.29.4",
     "lodash": "^4.17.21",
