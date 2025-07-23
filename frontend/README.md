@@ -1,130 +1,182 @@
 # LyraLytics Frontend
 
-A modern, bubbly React frontend for the LyraLytics social media analytics platform.
+A modern, responsive Next.js frontend for the LyraLytics unified analytics platform.
 
-## Features
+## 🚀 Features
 
-- 🎨 **Bubbly Design**: Modern, animated UI with glass morphism effects
-- 👤 **Smart Name Detection**: Automatically detects user's name from Google account or other sources
-- 🔗 **Social Media Integration**: Connect Google, Instagram, Twitter, and YouTube accounts
-- 📊 **Real-time Analytics**: Beautiful charts and data visualization
-- 🔐 **Secure OAuth**: Industry-standard authentication for all platforms
-- 📱 **Responsive Design**: Works perfectly on all devices
+- **Modern UI/UX**: Built with Next.js 14, TypeScript, and Tailwind CSS
+- **Responsive Design**: Mobile-first approach with beautiful responsive layouts
+- **Interactive Dashboards**: Real-time analytics with charts and visualizations
+- **Task Management**: Comprehensive task planning and workflow management
+- **Social Media Monitoring**: Multi-platform social media analytics
+- **Ecommerce Analytics**: Sales tracking and customer insights
+- **Real-time Updates**: Live data updates and notifications
 
-## Getting Started
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Charts**: Recharts
+- **Icons**: Lucide React
+- **Animations**: Framer Motion
+- **State Management**: Zustand
+- **Data Fetching**: TanStack Query
+- **Notifications**: React Hot Toast
+
+## 📦 Installation
 
 ### Prerequisites
 
-- Node.js 16+ 
+- Node.js 18+ 
 - npm or yarn
 
-### Installation
+### Setup
 
-1. Navigate to the frontend directory:
-```bash
-cd frontend
-```
+1. **Install dependencies**:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-2. Install dependencies:
-```bash
-npm install
-```
+2. **Environment Setup**:
+   Create a `.env.local` file in the root directory:
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:3001
+   NEXT_PUBLIC_APP_NAME=LyraLytics
+   ```
 
-3. Create a `.env` file with your API keys:
-```env
-REACT_APP_GOOGLE_CLIENT_ID=your_google_client_id
-REACT_APP_INSTAGRAM_CLIENT_ID=your_instagram_client_id
-REACT_APP_TWITTER_CLIENT_ID=your_twitter_client_id
-```
+3. **Run the development server**:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-4. Start the development server:
-```bash
-npm start
-```
+4. **Open your browser**:
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-The app will open at `http://localhost:3000`
-
-## Social Media API Setup
-
-### Google/YouTube
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select existing one
-3. Enable YouTube Data API v3
-4. Create OAuth 2.0 credentials
-5. Add your domain to authorized origins
-
-### Instagram
-1. Go to [Facebook Developers](https://developers.facebook.com/)
-2. Create a new app
-3. Add Instagram Basic Display product
-4. Configure OAuth redirect URIs
-5. Get your app ID and secret
-
-### Twitter
-1. Go to [Twitter Developer Portal](https://developer.twitter.com/)
-2. Create a new app
-3. Enable OAuth 2.0
-4. Configure callback URLs
-5. Get your client ID and secret
-
-## Available Scripts
-
-- `npm start` - Start development server
-- `npm build` - Build for production
-- `npm test` - Run tests
-- `npm eject` - Eject from Create React App
-
-## Project Structure
+## 🏗️ Project Structure
 
 ```
 src/
-├── components/          # React components
-│   ├── WelcomeScreen.js # Welcome page with name detection
-│   ├── SocialConnect.js # Social media connection
-│   ├── Dashboard.js     # Main dashboard
-│   └── Analytics.js     # Detailed analytics
-├── contexts/           # React contexts
-│   └── AuthContext.js  # Authentication state
-├── App.js             # Main app component
-├── index.js           # Entry point
-└── index.css          # Global styles
+├── app/                    # Next.js App Router
+│   ├── dashboard/         # Dashboard pages
+│   ├── globals.css        # Global styles
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Landing page
+├── components/            # Reusable components
+│   ├── dashboard/         # Dashboard-specific components
+│   │   ├── DashboardOverview.tsx
+│   │   ├── EcommerceAnalytics.tsx
+│   │   ├── SocialMediaMonitor.tsx
+│   │   └── TaskPlanner.tsx
+│   └── providers.tsx      # Context providers
+└── types/                 # TypeScript type definitions
 ```
 
-## Features in Detail
+## 📱 Pages & Components
 
-### Welcome Screen
-- Bubbly animated text that says "Welcome [Name]!"
-- Smart name detection from Google account
-- Beautiful floating bubble animations
-- Feature showcase with icons
+### Landing Page (`/`)
+- Hero section with value proposition
+- Feature overview
+- Statistics and social proof
+- Call-to-action sections
 
-### Social Connect
-- Connect multiple social media platforms
-- Real-time connection status
-- Progress tracking
-- Security information display
+### Dashboard (`/dashboard`)
+- **Overview**: Key metrics and recent activity
+- **Ecommerce Analytics**: Sales data, product performance, customer segmentation
+- **Social Media Monitor**: Multi-platform engagement tracking
+- **Task Planner**: Task management with priority scoring
 
-### Dashboard
-- Overview of all connected accounts
-- Real-time analytics data
-- Interactive charts and graphs
-- Platform-specific performance metrics
+## 🎨 Design System
 
-### Analytics
-- Detailed engagement analytics
-- Audience demographics
-- Performance radar charts
-- Export functionality
+### Colors
+- **Primary**: Blue (#3b82f6)
+- **Secondary**: Cyan (#0ea5e9)
+- **Success**: Green (#22c55e)
+- **Warning**: Orange (#f59e0b)
+- **Danger**: Red (#ef4444)
 
-## Styling
+### Components
+- Cards with consistent styling
+- Interactive buttons with hover states
+- Form inputs with focus states
+- Responsive navigation
+- Data tables with sorting
 
-The app uses:
-- **Tailwind CSS** for utility-first styling
-- **Framer Motion** for smooth animations
-- **Lucide React** for beautiful icons
-- **Chart.js** for data visualization
+## 📊 Data Visualization
 
-## Contributing
+The platform uses Recharts for data visualization:
+
+- **Line Charts**: Trend analysis over time
+- **Bar Charts**: Comparison between categories
+- **Pie Charts**: Distribution analysis
+- **Progress Bars**: Task completion tracking
+
+## 🔧 Development
+
+### Available Scripts
+
+```bash
+# Development
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run type-check   # Run TypeScript type checking
+```
+
+### Code Style
+
+- Use TypeScript for type safety
+- Follow ESLint configuration
+- Use Tailwind CSS for styling
+- Implement responsive design patterns
+- Write accessible components
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+1. Connect your GitHub repository to Vercel
+2. Configure environment variables
+3. Deploy automatically on push to main branch
+
+### Other Platforms
+
+The app can be deployed to any platform that supports Next.js:
+- Netlify
+- AWS Amplify
+- DigitalOcean App Platform
+- Railway
+
+## 🔗 API Integration
+
+The frontend is configured to connect to the LyraLytics backend API:
+
+- **Base URL**: `http://localhost:3001` (development)
+- **API Routes**: `/api/*`
+- **Authentication**: JWT-based auth
+- **Real-time**: WebSocket connections for live updates
+
+## 📈 Performance
+
+- **Lazy Loading**: Components loaded on demand
+- **Image Optimization**: Next.js Image component
+- **Code Splitting**: Automatic route-based splitting
+- **Caching**: TanStack Query for data caching
+- **Bundle Analysis**: Built-in Next.js analytics
+
+## 🔒 Security
+
+- **CORS**: Configured for API communication
+- **Environment Variables**: Secure configuration management
+- **Input Validation**: Client-side form validation
+- **XSS Protection**: React's built-in protection
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -132,6 +184,17 @@ The app uses:
 4. Add tests if applicable
 5. Submit a pull request
 
-## License
+## 📄 License
 
-MIT License - see LICENSE file for details 
+This project is part of the LyraLytics platform and follows the same licensing terms.
+
+## 🆘 Support
+
+For support and questions:
+- Check the documentation
+- Open an issue on GitHub
+- Contact the development team
+
+---
+
+Built with ❤️ by the LyraLytics team 
