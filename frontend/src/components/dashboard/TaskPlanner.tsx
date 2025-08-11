@@ -1,311 +1,447 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
-  Plus, 
   Calendar, 
   Clock, 
   CheckCircle, 
-  AlertCircle, 
-  Clock as ClockIcon,
-  User,
-  Tag,
+  AlertTriangle, 
+  Plus,
+  Edit,
+  Trash2,
   Filter,
   Search,
-  MoreVertical
+  Zap,
+  Target,
+  Users,
+  TrendingUp,
+  Brain,
+  Activity,
+  Star,
+  Priority
 } from 'lucide-react'
 
-const tasks = [
-  {
-    id: 1,
-    title: 'Create social media content calendar',
-    description: 'Plan and schedule content for the next month across all platforms',
-    priority: 'High',
-    status: 'In Progress',
-    assignee: 'Sarah Johnson',
-    dueDate: '2024-01-15',
-    category: 'Content',
-    estimatedHours: 8,
-    progress: 60
-  },
-  {
-    id: 2,
-    title: 'Analyze Q4 ecommerce performance',
-    description: 'Review sales data and identify optimization opportunities',
-    priority: 'Critical',
-    status: 'Pending',
-    assignee: 'Mike Chen',
-    dueDate: '2024-01-10',
-    category: 'Analytics',
-    estimatedHours: 12,
-    progress: 0
-  },
-  {
-    id: 3,
-    title: 'Optimize Instagram ad campaigns',
-    description: 'Review current campaigns and adjust targeting parameters',
-    priority: 'Medium',
-    status: 'Completed',
-    assignee: 'Emily Davis',
-    dueDate: '2024-01-08',
-    category: 'Advertising',
-    estimatedHours: 6,
-    progress: 100
-  },
-  {
-    id: 4,
-    title: 'Update website product descriptions',
-    description: 'Refresh product copy to improve SEO and conversion rates',
-    priority: 'Low',
-    status: 'In Progress',
-    assignee: 'Alex Thompson',
-    dueDate: '2024-01-20',
-    category: 'Content',
-    estimatedHours: 10,
-    progress: 30
-  },
-  {
-    id: 5,
-    title: 'Prepare monthly marketing report',
-    description: 'Compile analytics and insights for stakeholder presentation',
-    priority: 'High',
-    status: 'Pending',
-    assignee: 'Lisa Wang',
-    dueDate: '2024-01-12',
-    category: 'Reporting',
-    estimatedHours: 4,
-    progress: 0
-  }
-]
-
-const categories = ['All', 'Content', 'Analytics', 'Advertising', 'Reporting', 'Design']
-const priorities = ['All', 'Critical', 'High', 'Medium', 'Low']
-const statuses = ['All', 'Pending', 'In Progress', 'Completed']
-
 export default function TaskPlanner() {
-  const [selectedCategory, setSelectedCategory] = useState('All')
-  const [selectedPriority, setSelectedPriority] = useState('All')
-  const [selectedStatus, setSelectedStatus] = useState('All')
+  const [tasks, setTasks] = useState([
+    { id: 1, title: 'Launch Quantum Marketing Campaign', description: 'Execute the new AI-powered marketing strategy across all channels', priority: 'high', status: 'in-progress', assignee: 'Sarah Chen', dueDate: '2024-02-15', category: 'Marketing', progress: 75 },
+    { id: 2, title: 'Optimize Neural Network Algorithms', description: 'Improve the machine learning models for better prediction accuracy', priority: 'critical', status: 'pending', assignee: 'Alex Rodriguez', dueDate: '2024-02-20', category: 'Development', progress: 0 },
+    { id: 3, title: 'Social Media Content Calendar', description: 'Plan and schedule content for the next quarter across all platforms', priority: 'medium', status: 'completed', assignee: 'Emma Thompson', dueDate: '2024-02-10', category: 'Content', progress: 100 },
+    { id: 4, title: 'Customer Data Analysis', description: 'Analyze customer behavior patterns and generate insights report', priority: 'high', status: 'in-progress', assignee: 'David Kim', dueDate: '2024-02-18', category: 'Analytics', progress: 60 },
+    { id: 5, title: 'Security Protocol Review', description: 'Review and update cybersecurity protocols for the platform', priority: 'critical', status: 'pending', assignee: 'Lisa Wang', dueDate: '2024-02-25', category: 'Security', progress: 0 },
+  ])
+
+  const [filter, setFilter] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
+  const [showAddTask, setShowAddTask] = useState(false)
+  const [selectedTask, setSelectedTask] = useState(null)
+
+  const categories = [
+    { id: 'all', name: 'All Categories', icon: Target, color: 'from-cyan-400 to-blue-500' },
+    { id: 'marketing', name: 'Marketing', icon: TrendingUp, color: 'from-green-400 to-emerald-500' },
+    { id: 'development', name: 'Development', icon: Brain, color: 'from-purple-400 to-pink-500' },
+    { id: 'content', name: 'Content', icon: Users, color: 'from-blue-400 to-cyan-500' },
+    { id: 'analytics', name: 'Analytics', icon: Activity, color: 'from-orange-400 to-red-500' },
+    { id: 'security', name: 'Security', icon: AlertTriangle, color: 'from-red-400 to-pink-500' },
+  ]
+
+  const priorities = {
+    low: { color: 'text-green-400', bg: 'bg-green-400/20', border: 'border-green-400/30' },
+    medium: { color: 'text-yellow-400', bg: 'bg-yellow-400/20', border: 'border-yellow-400/30' },
+    high: { color: 'text-orange-400', bg: 'bg-orange-400/20', border: 'border-orange-400/30' },
+    critical: { color: 'text-red-400', bg: 'bg-red-400/20', border: 'border-red-400/30' },
+  }
+
+  const statuses = {
+    pending: { color: 'text-yellow-400', bg: 'bg-yellow-400/20', border: 'border-yellow-400/30' },
+    'in-progress': { color: 'text-blue-400', bg: 'bg-blue-400/20', border: 'border-blue-400/30' },
+    completed: { color: 'text-green-400', bg: 'bg-green-400/20', border: 'border-green-400/30' },
+  }
 
   const filteredTasks = tasks.filter(task => {
-    const matchesCategory = selectedCategory === 'All' || task.category === selectedCategory
-    const matchesPriority = selectedPriority === 'All' || task.priority === selectedPriority
-    const matchesStatus = selectedStatus === 'All' || task.status === selectedStatus
+    const matchesFilter = filter === 'all' || task.category.toLowerCase() === filter
     const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          task.description.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    return matchesCategory && matchesPriority && matchesStatus && matchesSearch
+    return matchesFilter && matchesSearch
   })
 
-  const getPriorityColor = (priority: string) => {
+  const getPriorityIcon = (priority: string) => {
     switch (priority) {
-      case 'Critical': return 'bg-red-100 text-red-800'
-      case 'High': return 'bg-orange-100 text-orange-800'
-      case 'Medium': return 'bg-yellow-100 text-yellow-800'
-      case 'Low': return 'bg-green-100 text-green-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'low': return '🟢'
+      case 'medium': return '🟡'
+      case 'high': return '🟠'
+      case 'critical': return '🔴'
+      default: return '⚪'
     }
   }
 
-  const getStatusColor = (status: string) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'Completed': return 'bg-green-100 text-green-800'
-      case 'In Progress': return 'bg-blue-100 text-blue-800'
-      case 'Pending': return 'bg-gray-100 text-gray-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'pending': return '⏳'
+      case 'in-progress': return '🔄'
+      case 'completed': return '✅'
+      default: return '❓'
     }
   }
 
-  const getProgressColor = (progress: number) => {
-    if (progress >= 80) return 'bg-green-500'
-    if (progress >= 50) return 'bg-yellow-500'
-    return 'bg-red-500'
+  const updateTaskStatus = (taskId: number, newStatus: string) => {
+    setTasks(tasks.map(task => 
+      task.id === taskId ? { ...task, status: newStatus } : task
+    ))
   }
+
+  const updateTaskProgress = (taskId: number, newProgress: number) => {
+    setTasks(tasks.map(task => 
+      task.id === taskId ? { ...task, progress: newProgress } : task
+    ))
+  }
+
+  const stats = [
+    { label: 'Total Tasks', value: tasks.length, icon: Target, color: 'from-cyan-400 to-blue-500' },
+    { label: 'In Progress', value: tasks.filter(t => t.status === 'in-progress').length, icon: Activity, color: 'from-blue-400 to-purple-500' },
+    { label: 'Completed', value: tasks.filter(t => t.status === 'completed').length, icon: CheckCircle, color: 'from-green-400 to-emerald-500' },
+    { label: 'Critical', value: tasks.filter(t => t.priority === 'critical').length, icon: AlertTriangle, color: 'from-red-400 to-orange-500' },
+  ]
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Task Planner</h1>
-          <p className="text-gray-600">Manage and track your marketing tasks</p>
-        </div>
-        <button className="btn-primary flex items-center">
-          <Plus className="h-4 w-4 mr-2" />
-          New Task
-        </button>
-      </div>
+      {/* Page Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-center"
+      >
+        <h1 className="hologram-text text-4xl md:text-5xl font-bold mb-4">
+          TASK PROTOCOL
+        </h1>
+        <p className="glow-text text-lg max-w-2xl mx-auto">
+          Advanced task management system with AI-powered prioritization and neural workflow optimization.
+        </p>
+      </motion.div>
 
-      {/* Filters */}
-      <div className="card">
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search tasks..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              />
-            </div>
+      {/* Stats Overview */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+      >
+        {stats.map((stat, index) => {
+          const Icon = stat.icon
+          return (
+            <motion.div
+              key={stat.label}
+              className="cyber-card group cursor-pointer"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 * index }}
+              whileHover={{ y: -5, scale: 1.02 }}
+            >
+              <div className={`w-12 h-12 bg-gradient-to-br ${stat.color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <Icon className="w-6 h-6 text-black" />
+              </div>
+              
+              <h3 className="text-cyan-400/70 text-sm font-exo mb-1">{stat.label}</h3>
+              <p className="glow-text text-2xl font-orbitron font-bold">{stat.value}</p>
+            </motion.div>
+          )
+        })}
+      </motion.div>
+
+      {/* Controls */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="flex flex-col lg:flex-row gap-4 items-center justify-between"
+      >
+        {/* Search and Filters */}
+        <div className="flex flex-col sm:flex-row gap-4 flex-1">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-cyan-400/50" />
+            <input
+              type="text"
+              placeholder="Search tasks..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="cyber-input pl-10 pr-4 w-64"
+            />
           </div>
           
-          <div className="flex gap-2">
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-            >
-              {categories.map(category => (
-                <option key={category} value={category}>{category}</option>
-              ))}
-            </select>
-            
-            <select
-              value={selectedPriority}
-              onChange={(e) => setSelectedPriority(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-            >
-              {priorities.map(priority => (
-                <option key={priority} value={priority}>{priority}</option>
-              ))}
-            </select>
-            
-            <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-            >
-              {statuses.map(status => (
-                <option key={status} value={status}>{status}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* Task Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="card">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Tasks</p>
-              <p className="text-2xl font-bold text-gray-900">{tasks.length}</p>
-            </div>
-            <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Calendar className="h-6 w-6 text-blue-600" />
-            </div>
+          <div className="flex space-x-1">
+            {categories.map((category) => {
+              const Icon = category.icon
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => setFilter(category.id)}
+                  className={`px-3 py-2 rounded-lg font-orbitron text-xs transition-all duration-300 flex items-center space-x-1 ${
+                    filter === category.id
+                      ? 'bg-cyan-400 text-black shadow-[0_0_20px_rgba(0,255,255,0.5)]'
+                      : 'text-cyan-400/70 hover:text-cyan-400 hover:bg-cyan-400/10'
+                  }`}
+                >
+                  <Icon className="w-3 h-3" />
+                  <span>{category.name}</span>
+                </button>
+              )
+            })}
           </div>
         </div>
 
-        <div className="card">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">In Progress</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {tasks.filter(t => t.status === 'In Progress').length}
-              </p>
-            </div>
-            <div className="h-12 w-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-              <ClockIcon className="h-6 w-6 text-yellow-600" />
-            </div>
-          </div>
-        </div>
+        {/* Add Task Button */}
+        <button
+          onClick={() => setShowAddTask(true)}
+          className="cyber-button flex items-center space-x-2"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Add Task</span>
+        </button>
+      </motion.div>
 
-        <div className="card">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Completed</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {tasks.filter(t => t.status === 'Completed').length}
-              </p>
-            </div>
-            <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
-              <CheckCircle className="h-6 w-6 text-green-600" />
-            </div>
-          </div>
-        </div>
-
-        <div className="card">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Overdue</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {tasks.filter(t => new Date(t.dueDate) < new Date() && t.status !== 'Completed').length}
-              </p>
-            </div>
-            <div className="h-12 w-12 bg-red-100 rounded-lg flex items-center justify-center">
-              <AlertCircle className="h-6 w-6 text-red-600" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Task List */}
-      <div className="card">
-        <div className="space-y-4">
-          {filteredTasks.map((task) => (
-            <div key={task.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900">{task.title}</h3>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
-                      {task.priority}
-                    </span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(task.status)}`}>
-                      {task.status}
-                    </span>
-                  </div>
-                  
-                  <p className="text-gray-600 mb-3">{task.description}</p>
-                  
-                  <div className="flex items-center gap-6 text-sm text-gray-500">
-                    <div className="flex items-center gap-1">
-                      <User className="h-4 w-4" />
-                      {task.assignee}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
-                      {new Date(task.dueDate).toLocaleDateString()}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      {task.estimatedHours}h
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Tag className="h-4 w-4" />
-                      {task.category}
-                    </div>
-                  </div>
-                  
-                  {task.status === 'In Progress' && (
-                    <div className="mt-3">
-                      <div className="flex items-center justify-between text-sm mb-1">
-                        <span className="text-gray-600">Progress</span>
-                        <span className="font-medium">{task.progress}%</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className={`h-2 rounded-full ${getProgressColor(task.progress)}`}
-                          style={{ width: `${task.progress}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                
-                <button className="p-2 text-gray-400 hover:text-gray-600">
-                  <MoreVertical className="h-4 w-4" />
+      {/* Tasks Grid */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"
+      >
+        {filteredTasks.map((task, index) => (
+          <motion.div
+            key={task.id}
+            className={`cyber-card cursor-pointer group ${
+              priorities[task.priority].bg
+            } ${priorities[task.priority].border}`}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 * index }}
+            whileHover={{ y: -5, scale: 1.02 }}
+            onClick={() => setSelectedTask(task)}
+          >
+            {/* Task Header */}
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex items-center space-x-2">
+                <span className="text-lg">{getPriorityIcon(task.priority)}</span>
+                <span className="text-lg">{getStatusIcon(task.status)}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <button className="p-1 hover:bg-cyan-400/20 rounded transition-colors">
+                  <Edit className="w-3 h-3 text-cyan-400/70" />
+                </button>
+                <button className="p-1 hover:bg-red-400/20 rounded transition-colors">
+                  <Trash2 className="w-3 h-3 text-red-400/70" />
                 </button>
               </div>
             </div>
-          ))}
+
+            {/* Task Content */}
+            <h3 className="glow-text text-lg font-orbitron mb-2">{task.title}</h3>
+            <p className="text-cyan-400/70 text-sm font-exo mb-3 line-clamp-2">{task.description}</p>
+
+            {/* Task Meta */}
+            <div className="space-y-2 mb-4">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-cyan-400/70">Assignee:</span>
+                <span className="text-cyan-400 font-exo">{task.assignee}</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-cyan-400/70">Due:</span>
+                <span className="text-cyan-400 font-exo">{task.dueDate}</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-cyan-400/70">Category:</span>
+                <span className="text-cyan-400 font-exo capitalize">{task.category}</span>
+              </div>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="mb-3">
+              <div className="flex items-center justify-between text-xs mb-1">
+                <span className="text-cyan-400/70">Progress</span>
+                <span className="text-cyan-400 font-orbitron">{task.progress}%</span>
+              </div>
+              <div className="w-full bg-black/60 rounded-full h-2 border border-cyan-400/30">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${task.progress}%` }}
+                  transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
+                />
+              </div>
+            </div>
+
+            {/* Status Controls */}
+            <div className="flex space-x-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  updateTaskStatus(task.id, 'pending')
+                }}
+                className={`px-2 py-1 rounded text-xs font-orbitron transition-all duration-300 ${
+                  task.status === 'pending' 
+                    ? 'bg-yellow-400/30 text-yellow-400 border border-yellow-400/50' 
+                    : 'text-cyan-400/70 hover:bg-yellow-400/20'
+                }`}
+              >
+                Pending
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  updateTaskStatus(task.id, 'in-progress')
+                }}
+                className={`px-2 py-1 rounded text-xs font-orbitron transition-all duration-300 ${
+                  task.status === 'in-progress' 
+                    ? 'bg-blue-400/30 text-blue-400 border border-blue-400/50' 
+                    : 'text-cyan-400/70 hover:bg-blue-400/20'
+                }`}
+              >
+                In Progress
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  updateTaskStatus(task.id, 'completed')
+                }}
+                className={`px-2 py-1 rounded text-xs font-orbitron transition-all duration-300 ${
+                  task.status === 'completed' 
+                    ? 'bg-green-400/30 text-green-400 border border-green-400/50' 
+                    : 'text-cyan-400/70 hover:bg-green-400/20'
+                }`}
+              >
+                Complete
+              </button>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Quick Actions */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="cyber-card"
+      >
+        <h3 className="glow-text text-xl font-orbitron mb-6 flex items-center">
+          <Zap className="w-5 h-5 mr-2" />
+          QUICK ACTIONS
+        </h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="text-center">
+            <div className="w-24 h-24 mx-auto mb-4 relative">
+              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  fill="none"
+                  stroke="rgba(0, 255, 255, 0.2)"
+                  strokeWidth="8"
+                />
+                <motion.circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  fill="none"
+                  stroke="url(#gradient1)"
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  initial={{ strokeDasharray: 0, strokeDashoffset: 0 }}
+                  animate={{ strokeDasharray: 251.2, strokeDashoffset: 0 }}
+                  transition={{ duration: 2, delay: 0.5 }}
+                />
+                <defs>
+                  <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#00ffff" />
+                    <stop offset="100%" stopColor="#0080ff" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="glow-text text-lg font-orbitron">75%</span>
+              </div>
+            </div>
+            <p className="text-cyan-400/70 font-exo">Tasks Completed</p>
+          </div>
+          
+          <div className="text-center">
+            <div className="w-24 h-24 mx-auto mb-4 relative">
+              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  fill="none"
+                  stroke="rgba(0, 255, 255, 0.2)"
+                  strokeWidth="8"
+                />
+                <motion.circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  fill="none"
+                  stroke="url(#gradient2)"
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  initial={{ strokeDasharray: 0, strokeDashoffset: 0 }}
+                  animate={{ strokeDasharray: 251.2, strokeDashoffset: 0 }}
+                  transition={{ duration: 2, delay: 0.7 }}
+                />
+                <defs>
+                  <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#0080ff" />
+                    <stop offset="100%" stopColor="#8000ff" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="glow-text text-lg font-orbitron">3</span>
+              </div>
+            </div>
+            <p className="text-cyan-400/70 font-exo">Critical Tasks</p>
+          </div>
+          
+          <div className="text-center">
+            <div className="w-24 h-24 mx-auto mb-4 relative">
+              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  fill="none"
+                  stroke="rgba(0, 255, 255, 0.2)"
+                  strokeWidth="8"
+                />
+                <motion.circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  fill="none"
+                  stroke="url(#gradient3)"
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  initial={{ strokeDasharray: 0, strokeDashoffset: 0 }}
+                  animate={{ strokeDasharray: 251.2, strokeDashoffset: 0 }}
+                  transition={{ duration: 2, delay: 0.9 }}
+                />
+                <defs>
+                  <linearGradient id="gradient3" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#8000ff" />
+                    <stop offset="100%" stopColor="#ff0080" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="glow-text text-lg font-orbitron">2</span>
+              </div>
+            </div>
+            <p className="text-cyan-400/70 font-exo">Overdue Tasks</p>
+          </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 } 

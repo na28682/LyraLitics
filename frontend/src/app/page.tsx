@@ -1,248 +1,242 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { 
-  BarChart3, 
+  Brain, 
+  Zap, 
+  Target, 
   TrendingUp, 
-  Calendar, 
-  Users, 
-  ShoppingCart, 
-  Instagram,
-  Youtube,
-  CheckCircle,
+  Shield, 
+  Cpu,
   ArrowRight,
-  Play
+  Play,
+  Pause,
+  RotateCcw
 } from 'lucide-react'
 import Link from 'next/link'
 
 export default function HomePage() {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [currentTime, setCurrentTime] = useState(0)
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout
+    if (isPlaying) {
+      interval = setInterval(() => {
+        setCurrentTime(prev => (prev + 1) % 100)
+      }, 100)
+    }
+    return () => clearInterval(interval)
+  }, [isPlaying])
 
   const features = [
     {
-      icon: ShoppingCart,
-      title: 'Ecommerce Analytics',
-      description: 'Track sales, customer behavior, and product performance with real-time insights.',
-      color: 'text-blue-600'
+      icon: Brain,
+      title: 'Neural Analytics',
+      description: 'AI-powered insights with quantum processing capabilities',
+      color: 'from-cyan-400 to-blue-500'
     },
     {
-      icon: Instagram,
-      title: 'Social Media Monitoring',
-      description: 'Monitor trends across multiple platforms including Instagram, YouTube, and TikTok.',
-      color: 'text-purple-600'
+      icon: Zap,
+      title: 'Real-time Monitoring',
+      description: 'Instant data streams with zero-latency processing',
+      color: 'from-blue-400 to-purple-500'
     },
     {
-      icon: Calendar,
-      title: 'Task Planning',
-      description: 'AI-powered task generation and workflow management for marketing teams.',
-      color: 'text-green-600'
+      icon: Target,
+      title: 'Precision Targeting',
+      description: 'Laser-focused audience segmentation algorithms',
+      color: 'from-purple-400 to-pink-500'
     },
     {
-      icon: BarChart3,
-      title: 'Unified Analytics',
-      description: 'Cross-platform correlation analysis and strategic insights generation.',
-      color: 'text-orange-600'
+      icon: TrendingUp,
+      title: 'Predictive Intelligence',
+      description: 'Forecast trends before they emerge',
+      color: 'from-pink-400 to-red-500'
+    },
+    {
+      icon: Shield,
+      title: 'Cyber Security',
+      description: 'Military-grade encryption and protection',
+      color: 'from-red-400 to-orange-500'
+    },
+    {
+      icon: Cpu,
+      title: 'Quantum Processing',
+      description: 'Next-generation computational power',
+      color: 'from-orange-400 to-yellow-500'
     }
   ]
 
-  const stats = [
-    { label: 'Active Users', value: '10K+' },
-    { label: 'Data Sources', value: '50+' },
-    { label: 'Analytics Reports', value: '1M+' },
-    { label: 'Customer Satisfaction', value: '98%' }
-  ]
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <h1 className="text-2xl font-bold text-gradient">LyraLytics</h1>
-              </div>
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 matrix-bg" />
+      <div className="absolute inset-0 cyber-grid opacity-20" />
+      
+      {/* Floating Orbs */}
+      <div className="absolute top-20 left-20 w-32 h-32 bg-cyan-400/20 rounded-full blur-xl animate-float" />
+      <div className="absolute top-40 right-32 w-24 h-24 bg-blue-500/20 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }} />
+      <div className="absolute bottom-32 left-32 w-28 h-28 bg-purple-500/20 rounded-full blur-xl animate-float" style={{ animationDelay: '4s' }} />
+      
+      {/* Scan Line Effect */}
+      <div className="absolute inset-0 scan-line pointer-events-none" />
+
+      {/* Main Content */}
+      <div className="relative z-10 container mx-auto px-4 py-8">
+        {/* Header */}
+        <motion.header 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.div 
+            className="inline-block mb-6"
+            animate={{ rotate: [0, 5, -5, 0] }}
+            transition={{ duration: 4, repeat: Infinity }}
+          >
+            <div className="w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 pulse-glow">
+              <Brain className="w-10 h-10 text-black" />
             </div>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                <Link href="#features" className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium">
-                  Features
-                </Link>
-                <Link href="#pricing" className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium">
-                  Pricing
-                </Link>
-                <Link href="/dashboard" className="btn-primary">
-                  Get Started
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="text-center">
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-5xl md:text-6xl font-bold text-gray-900 mb-6"
-            >
-              Transform Your
-              <span className="text-gradient"> Marketing</span>
-              <br />
-              with Unified Analytics
-            </motion.h1>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto"
-            >
-              Unify ecommerce analytics, social media monitoring, and task planning into a single, 
-              intuitive interface. Reclaim your time and focus on meaningful, data-driven strategy.
-            </motion.p>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-            >
-              <Link href="/dashboard" className="btn-primary text-lg px-8 py-3">
-                Start Free Trial
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <button 
-                onClick={() => setIsVideoPlaying(true)}
-                className="flex items-center gap-2 text-gray-700 hover:text-primary-600 font-medium"
-              >
-                <Play className="h-5 w-5" />
-                Watch Demo
-              </button>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Stats Section */}
-        <div className="bg-white border-t border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.6 + index * 0.1 }}
-                  className="text-center"
-                >
-                  <div className="text-3xl font-bold text-primary-600 mb-2">{stat.value}</div>
-                  <div className="text-gray-600">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Everything You Need in One Platform
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Stop juggling multiple tools. LyraLytics brings all your marketing analytics 
-              and task management into one unified dashboard.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="card hover:shadow-lg transition-shadow duration-300"
-              >
-                <div className={`${feature.color} mb-4`}>
-                  <feature.icon className="h-12 w-12" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600">
-                  {feature.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-primary-600 to-secondary-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Ready to Transform Your Marketing?
-          </h2>
-          <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of marketing teams who have already unified their analytics 
-            and reclaimed their time with LyraLytics.
+          </motion.div>
+          
+          <h1 className="hologram-text text-6xl md:text-8xl font-bold mb-6 tracking-wider">
+            LYRALYTICS
+          </h1>
+          
+          <p className="glow-text text-xl md:text-2xl mb-8 max-w-3xl mx-auto font-exo">
+            Enter the future of cybernetic analytics. Where data meets destiny.
           </p>
-          <Link href="/dashboard" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
-            Get Started Free
-          </Link>
-        </div>
-      </section>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link href="/dashboard">
+              <motion.button 
+                className="cyber-button text-lg"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Access Neural Core
+                <ArrowRight className="ml-2 w-5 h-5 inline" />
+              </motion.button>
+            </Link>
+            
+            <motion.button 
+              className="cyber-button text-lg border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-black"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              View Demo
+              <Play className="ml-2 w-5 h-5 inline" />
+            </motion.button>
+          </div>
+        </motion.header>
+
+        {/* Interactive Status Display */}
+        <motion.div 
+          className="cyber-card max-w-2xl mx-auto mb-16 text-center"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <h3 className="glow-text text-xl font-orbitron mb-4">SYSTEM STATUS</h3>
+          
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <button 
+              onClick={() => setIsPlaying(!isPlaying)}
+              className="cyber-button text-sm px-4 py-2"
+            >
+              {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+            </button>
+            
+            <button 
+              onClick={() => setCurrentTime(0)}
+              className="cyber-button text-sm px-4 py-2"
+            >
+              <RotateCcw className="w-4 h-4" />
+            </button>
+          </div>
+          
+          <div className="relative">
+            <div className="w-full bg-black/60 border border-cyan-400/30 rounded-lg h-3 overflow-hidden">
+              <motion.div 
+                className="h-full bg-gradient-to-r from-cyan-400 to-blue-500"
+                style={{ width: `${currentTime}%` }}
+                transition={{ duration: 0.1 }}
+              />
+            </div>
+            <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-cyan-400/70 font-orbitron text-sm">
+              {currentTime}% OPERATIONAL
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Features Grid */}
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              className="cyber-card group cursor-pointer"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 * index }}
+              whileHover={{ y: -5, scale: 1.02 }}
+            >
+              <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <feature.icon className="w-8 h-8 text-black" />
+              </div>
+              
+              <h3 className="glow-text text-xl font-orbitron mb-2">{feature.title}</h3>
+              <p className="text-cyan-400/70 font-exo">{feature.description}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Call to Action */}
+        <motion.div 
+          className="text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
+          <div className="cyber-card max-w-4xl mx-auto">
+            <h2 className="hologram-text text-4xl md:text-5xl font-bold mb-6">
+              READY TO TRANSCEND?
+            </h2>
+            <p className="glow-text text-xl mb-8 max-w-2xl mx-auto">
+              Join the elite ranks of data visionaries. The future is now.
+            </p>
+            <Link href="/dashboard">
+              <motion.button 
+                className="cyber-button text-xl px-8 py-4"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                INITIALIZE SYSTEM
+                <ArrowRight className="ml-3 w-6 h-6 inline" />
+              </motion.button>
+            </Link>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-2xl font-bold text-gradient mb-4">LyraLytics</h3>
-              <p className="text-gray-400">
-                Unified analytics platform for modern marketing teams.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="#" className="hover:text-white">Features</Link></li>
-                <li><Link href="#" className="hover:text-white">Pricing</Link></li>
-                <li><Link href="#" className="hover:text-white">API</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="#" className="hover:text-white">About</Link></li>
-                <li><Link href="#" className="hover:text-white">Blog</Link></li>
-                <li><Link href="#" className="hover:text-white">Careers</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="#" className="hover:text-white">Help Center</Link></li>
-                <li><Link href="#" className="hover:text-white">Contact</Link></li>
-                <li><Link href="#" className="hover:text-white">Status</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 LyraLytics. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <motion.footer 
+        className="relative z-10 text-center py-8 border-t border-cyan-400/20"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.8 }}
+      >
+        <p className="text-cyan-400/50 font-exo">
+          © 2024 LyraLytics Neural Core. All systems operational.
+        </p>
+      </motion.footer>
     </div>
   )
 } 

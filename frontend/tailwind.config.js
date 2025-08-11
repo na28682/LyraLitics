@@ -9,18 +9,6 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-        },
-        secondary: {
           50: '#f0f9ff',
           100: '#e0f2fe',
           200: '#bae6fd',
@@ -32,50 +20,77 @@ module.exports = {
           800: '#075985',
           900: '#0c4a6e',
         },
-        success: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
+        secondary: {
+          50: '#fdf4ff',
+          100: '#fae8ff',
+          200: '#f5d0fe',
+          300: '#f0abfc',
+          400: '#e879f9',
+          500: '#d946ef',
+          600: '#c026d3',
+          700: '#a21caf',
+          800: '#86198f',
+          900: '#701a75',
         },
-        warning: {
-          50: '#fffbeb',
-          100: '#fef3c7',
-          200: '#fde68a',
-          300: '#fcd34d',
-          400: '#fbbf24',
-          500: '#f59e0b',
-          600: '#d97706',
-          700: '#b45309',
-          800: '#92400e',
-          900: '#78350f',
+        cyan: {
+          400: '#00ffff',
+          500: '#00cccc',
+          600: '#009999',
         },
-        danger: {
-          50: '#fef2f2',
-          100: '#fee2e2',
-          200: '#fecaca',
-          300: '#fca5a5',
-          400: '#f87171',
-          500: '#ef4444',
-          600: '#dc2626',
-          700: '#b91c1c',
-          800: '#991b1b',
-          900: '#7f1d1d',
+        blue: {
+          400: '#0080ff',
+          500: '#0066cc',
+          600: '#004d99',
+        },
+        purple: {
+          400: '#8000ff',
+          500: '#6600cc',
+          600: '#4d0099',
+        },
+        pink: {
+          400: '#ff0080',
+          500: '#cc0066',
+          600: '#99004d',
+        },
+        red: {
+          400: '#ff0000',
+          500: '#cc0000',
+          600: '#990000',
+        },
+        orange: {
+          400: '#ff8000',
+          500: '#cc6600',
+          600: '#994d00',
+        },
+        yellow: {
+          400: '#ffff00',
+          500: '#cccc00',
+          600: '#999900',
+        },
+        green: {
+          400: '#00ff00',
+          500: '#00cc00',
+          600: '#009900',
+        },
+        emerald: {
+          400: '#00ff80',
+          500: '#00cc66',
+          600: '#00994d',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        orbitron: ['var(--font-orbitron)', 'Orbitron', 'monospace'],
+        exo: ['var(--font-exo)', 'Exo 2', 'sans-serif'],
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'fade-in': 'fadeIn 0.8s ease-out',
+        'slide-up': 'slideUp 0.6s ease-out',
+        'slide-in-right': 'slideInRight 0.8s ease-out',
+        'rotate-slow': 'rotateSlow 20s linear infinite',
+        'breathe': 'breathe 4s ease-in-out infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+        'scan': 'scan 3s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -83,11 +98,68 @@ module.exports = {
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '0%': { transform: 'translateY(30px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
+        slideInRight: {
+          '0%': { transform: 'translateX(50px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        rotateSlow: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        breathe: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.02)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        'pulse-glow': {
+          '0%': { boxShadow: '0 0 20px rgba(0, 255, 255, 0.3)' },
+          '100%': { boxShadow: '0 0 40px rgba(0, 255, 255, 0.6)' },
+        },
+        scan: {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(100vh)' },
+        },
+      },
+      backdropBlur: {
+        xs: '2px',
+      },
+      boxShadow: {
+        'cyber-glow': '0 0 30px rgba(0, 255, 255, 0.2)',
+        'cyber-glow-lg': '0 0 50px rgba(0, 255, 255, 0.3)',
+        'cyber-glow-xl': '0 0 80px rgba(0, 255, 255, 0.4)',
+      },
+      textShadow: {
+        'glow': '0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+    function({ addUtilities }) {
+      const newUtilities = {
+        '.text-shadow-glow': {
+          'text-shadow': '0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor',
+        },
+        '.matrix-bg': {
+          'background': 'radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(0, 0, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 40% 40%, rgba(128, 0, 255, 0.05) 0%, transparent 50%)',
+        },
+        '.cyber-grid': {
+          'background-image': 'linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)',
+          'background-size': '20px 20px',
+          'background-position': 'center center',
+        },
+        '.scan-line': {
+          'background': 'linear-gradient(to bottom, transparent 0%, rgba(0, 255, 255, 0.1) 50%, transparent 100%)',
+          'animation': 'scan 3s linear infinite',
+        },
+      }
+      addUtilities(newUtilities)
+    }
+  ],
 } 

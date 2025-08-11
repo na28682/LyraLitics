@@ -1,16 +1,26 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Orbitron, Exo_2 } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/providers'
 import { Toaster } from 'react-hot-toast'
 
-const inter = Inter({ subsets: ['latin'] })
+const orbitron = Orbitron({ 
+  subsets: ['latin'],
+  variable: '--font-orbitron',
+  display: 'swap',
+})
+
+const exo2 = Exo_2({ 
+  subsets: ['latin'],
+  variable: '--font-exo',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: 'LyraLytics - Unified Analytics Platform',
-  description: 'Transform how marketing teams work with unified ecommerce analytics, social media monitoring, and task planning.',
-  keywords: 'analytics, marketing, social media, ecommerce, task management',
-  authors: [{ name: 'LyraLytics Team' }],
+  title: 'LyraLytics - Cybernetic Analytics Platform',
+  description: 'Advanced unified analytics platform with cybernetic intelligence for marketing teams. Experience the future of data-driven decision making.',
+  keywords: 'cybernetic analytics, AI marketing, neural networks, holographic data, quantum insights',
+  authors: [{ name: 'LyraLytics Neural Core' }],
   viewport: 'width=device-width, initial-scale=1',
 }
 
@@ -20,8 +30,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className={`${orbitron.variable} ${exo2.variable}`}>
+      <body className="font-exo">
         <Providers>
           {children}
           <Toaster 
@@ -29,8 +39,11 @@ export default function RootLayout({
             toastOptions={{
               duration: 4000,
               style: {
-                background: '#363636',
-                color: '#fff',
+                background: 'rgba(0, 0, 0, 0.9)',
+                color: '#00ffff',
+                border: '1px solid rgba(0, 255, 255, 0.3)',
+                backdropFilter: 'blur(10px)',
+                fontFamily: 'var(--font-orbitron)',
               },
             }}
           />
