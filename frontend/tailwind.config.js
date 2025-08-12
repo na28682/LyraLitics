@@ -140,7 +140,7 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
+    // Removed @tailwindcss/forms plugin that was causing the build error
     function({ addUtilities }) {
       const newUtilities = {
         '.text-shadow-glow': {
