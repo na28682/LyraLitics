@@ -263,4 +263,5 @@ Thumbs.db
 !*.py
 !*.sh
 !*.md
-!.env.example 
+!.env.example *.log
+node_modules/
